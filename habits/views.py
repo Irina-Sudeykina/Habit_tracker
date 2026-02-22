@@ -1,10 +1,9 @@
-from django.shortcuts import render
-from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView
+from rest_framework.generics import CreateAPIView, DestroyAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from habits.serializers import HabitSerializer
-from habits.paginators import CastomPaginator
-from habits.models import Habit
 
+from habits.models import Habit, Reminder
+from habits.paginators import CastomPaginator
+from habits.serializers import HabitSerializer, ReminderSerializer
 from users.permissions import isOwner
 
 
@@ -48,4 +47,40 @@ class HabitUpdateAPIView(UpdateAPIView):
 class HabitDestroyAPIView(DestroyAPIView):
     serializer_class = HabitSerializer
     queryset = Habit.objects.all()
+    permission_classes = (IsAuthenticated, isOwner)
+
+
+class ReminderCreateAPIView(CreateAPIView):
+    serializer_class = ReminderSerializer
+    queryset = Reminder.objects.all()
+    permission_classes = (IsAuthenticated,)
+
+    def perform_create(self, serializer):
+        habit_pk = self.request.data.get("habit")  # получаем PK привычки из тела запроса
+        habit = Habit.objects.get(pk=habit_pk)  # находим привычку по этому PK
+        serializer.save(owner=self.request.user, habit=habit)  # сохраняем связь
+
+
+class ReminderListAPIView(ListAPIView):
+    serializer_class = ReminderSerializer
+    queryset = Reminder.objects.all()
+    permission_classes = (IsAuthenticated, isOwner)
+    pagination_class = CastomPaginator
+
+
+class ReminderRetrieveAPIView(RetrieveAPIView):
+    serializer_class = ReminderSerializer
+    queryset = Reminder.objects.all()
+    permission_classes = (IsAuthenticated, isOwner)
+
+
+class ReminderUpdateAPIView(UpdateAPIView):
+    serializer_class = ReminderSerializer
+    queryset = Reminder.objects.all()
+    permission_classes = (IsAuthenticated, isOwner)
+
+
+class ReminderDestroyAPIView(DestroyAPIView):
+    serializer_class = ReminderSerializer
+    queryset = Reminder.objects.all()
     permission_classes = (IsAuthenticated, isOwner)

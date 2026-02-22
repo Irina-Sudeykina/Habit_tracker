@@ -1,12 +1,8 @@
 from rest_framework import serializers
-from habits.models import Habit
-from habits.validators import (
-    validate_linked_habit_and_reward,
-    validate_time_to_complete,
-    validate_linked_habit_is_pleasant,
-    validate_pleasant_habit_no_rewards_or_links,
-    validate_frequency
-)
+
+from habits.models import Habit, Reminder
+from habits.validators import (validate_frequency, validate_linked_habit_and_reward, validate_linked_habit_is_pleasant,
+                               validate_pleasant_habit_no_rewards_or_links, validate_time_to_complete)
 
 
 class HabitSerializer(serializers.ModelSerializer):
@@ -26,4 +22,12 @@ class HabitSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Habit
+        fields = "__all__"
+
+
+class ReminderSerializer(serializers.ModelSerializer):
+    habit = serializers.PrimaryKeyRelatedField(queryset=Habit.objects.all())
+
+    class Meta:
+        model = Reminder
         fields = "__all__"

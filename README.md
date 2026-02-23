@@ -43,7 +43,7 @@ python manage.py runserver
 ```
 python manage.py test
 или
-coverage run --source='.' manage.py test
+coverage run manage.py test
 ```
 Для выгрузки отчета о покрытии проекта тестами выполните команду:
 ```

@@ -1,0 +1,3 @@
+[run]
+source = users,habits
+omit = */migrations/*,*/tests/*

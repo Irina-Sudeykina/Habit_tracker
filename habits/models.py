@@ -1,0 +1,98 @@
+from django.db import models
+
+from users.models import User
+
+
+class Habit(models.Model):
+    owner = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name="owned_habits",
+        verbose_name="Пользователь",
+        help_text="Укажите пользователя - создателя привычки",
+    )
+    location = models.CharField(
+        max_length=150, verbose_name="Место", help_text="Укажите место, в котором необходимо выполнять привычку"
+    )
+    time_habit = models.TimeField(verbose_name="Время", help_text="Укажите время, когда необходимо выполнять привычку")
+    action_habit = models.CharField(
+        max_length=250, verbose_name="Действие", help_text="Укажите действие, которое представляет собой привычка"
+    )
+    is_pleasant = models.BooleanField(
+        default=False,
+        null=True,
+        blank=True,
+        verbose_name="Признак приятной привычки",
+        help_text="Укажите признак приятной привычки",
+    )
+    linked_habit = models.ForeignKey(
+        "habits.Habit",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        verbose_name="Связанная привычка",
+        help_text="Укажите связанную привычку",
+    )
+    frequency = models.PositiveIntegerField(
+        default=1,
+        verbose_name="Периодичность",
+        help_text="Укажите периодичность выполнения привычки для напоминания в днях",
+    )
+    reward = models.CharField(
+        max_length=250, blank=True, null=True, verbose_name="Вознаграждение", help_text="Укажите вознаграждение"
+    )
+    time_to_complete = models.PositiveIntegerField(
+        default=120, verbose_name="Время на выполнение", help_text="Укажите время на выполнение привычки в секундах"
+    )
+    is_published = models.BooleanField(
+        default=False,
+        null=True,
+        blank=True,
+        verbose_name="Признак публичности",
+        help_text="Укажите признак публичности",
+    )
+
+    class Meta:
+        verbose_name = "Привычка"
+        verbose_name_plural = "Привычки"
+        ordering = [
+            "time_habit",
+        ]
+
+    def __str__(self):
+        return f"{self.time_habit} - {self.action_habit} ({self.is_pleasant})"
+
+
+class Reminder(models.Model):
+    owner = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name="owned_reminders",
+        verbose_name="Пользователь",
+        help_text="Укажите пользователя - создателя напоминания",
+    )
+    habit = models.ForeignKey(
+        "habits.Habit",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        verbose_name="Привычка",
+        help_text="Укажите привычку",
+    )
+    date_reminder = models.DateField(
+        blank=True, null=True, verbose_name="Дата напоминания", help_text="Укажите дату напоминания"
+    )
+
+    class Meta:
+        verbose_name = "Напоминание"
+        verbose_name_plural = "Напоминания"
+        ordering = [
+            "date_reminder",
+        ]
+
+    def __str__(self):
+        return f"{self.date_reminder} - {self.habit} ({self.owner})"

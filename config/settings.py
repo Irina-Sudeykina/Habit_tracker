@@ -36,7 +36,9 @@ INSTALLED_APPS = [
     'django_filters',
     "corsheaders",
     'drf_yasg',
+    "django_celery_beat",
     "users",
+    "habits",
 ]
 
 MIDDLEWARE = [
@@ -109,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Yekaterinburg"
 
 USE_I18N = True
 
@@ -153,3 +155,31 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = False
+
+# Настройки для Celery
+
+# URL-адрес брокера сообщений
+CELERY_BROKER_URL = os.getenv("RADIS_LOCATION")
+# URL-адрес брокера результатов, также Redis  
+CELERY_RESULT_BACKEND = os.getenv("RADIS_LOCATION")
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+
+# Часовой пояс для работы Celery
+CELERY_TIMEZONE = TIME_ZONE
+
+# Флаг отслеживания выполнения задач
+CELERY_TASK_TRACK_STARTED = True 
+
+# Максимальное время на выполнение задачи
+CELERY_TASK_TIME_LIMIT = 30 * 60
+
+CELERY_BEAT_SCHEDULER='django_celery_beat.schedulers:DatabaseScheduler'
+
+CELERY_BEAT_SCHEDULE = {
+    'send_reminder': {
+        'task': 'habits.tasks.send_reminder',  # Путь к задаче
+        'schedule': timedelta(minutes=5),  # Расписание выполнения задачи (каждые 5 минут)
+    },
+}

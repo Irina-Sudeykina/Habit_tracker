@@ -55,8 +55,18 @@ jobs:
             - name: Deploy to Server
               run: |
                 ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-                docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
-                docker stop myapp || true
-                docker rm myapp || true
-                docker run -d --name myapp -p 80:8000 ${{ secrets.DOCKER_HUB_USERNAME }}/myapp:${{ github.sha }}
+                # Заходим в папку проекта
+                cd ~/Habit_tracker
+                
+                # Забираем свежий код из GitHub (включая изменения в .yml)
+                git pull origin main
+                
+                # Пересобираем и запускаем все контейнеры (web, db, redis, celery, beat)
+                docker compose up -d --build
+                
+                # Применяем миграции внутри контейнера web (флаг -T важен!)
+                docker compose exec -T web python manage.py migrate
+                
+                # Удаляем старые ненужные слои образов, чтобы не тратить место
+                docker image prune -f
                 EOF

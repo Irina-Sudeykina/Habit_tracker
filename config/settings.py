@@ -1,4 +1,5 @@
 import os
+import sys
 from pathlib import Path
 from datetime import timedelta
 
@@ -186,3 +187,11 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': timedelta(minutes=5),  # Расписание выполнения задачи (каждые 5 минут)
     },
 }
+
+if "test" in sys.argv:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "test_db.sqlite3",
+        }
+    }

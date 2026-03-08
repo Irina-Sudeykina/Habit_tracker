@@ -1,9 +1,9 @@
 from __future__ import absolute_import, unicode_literals
 import os
-import eventlet
+# import eventlet
 
 # Применяем monkey patch перед остальными импортами
-eventlet.monkey_patch()
+# eventlet.monkey_patch()
 
 from celery import Celery
 

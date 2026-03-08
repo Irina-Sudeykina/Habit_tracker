@@ -1,0 +1,44 @@
+[
+{
+    "model": "users.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$1200000$0HzChMyKY9FIh0GsXl5Njv$cLzxWF/ur+LHMhmLCLUI6rOoKOc8Qo6K9LxzjWmChWI=",
+        "last_login": "2026-02-19T15:05:28.263Z",
+        "is_superuser": true,
+        "first_name": "",
+        "last_name": "",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2026-02-19T15:01:55.328Z",
+        "email": "testadmin@mail.ru",
+        "phone": null,
+        "tg_nick": null,
+        "avatar": "",
+        "tg_chat_id": null,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "users.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$1200000$5q4d7FC0PZx7XP3TLk3zeU$oTsmp9AHUwgujrWJsdlUdRq1SrwzJjjAa5kjMLjK3ec=",
+        "last_login": null,
+        "is_superuser": false,
+        "first_name": "Ирина",
+        "last_name": "Судейкина",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2026-02-19T15:40:57Z",
+        "email": "irinaasster@gmail.com",
+        "phone": null,
+        "tg_nick": "@irina_as82",
+        "avatar": "",
+        "tg_chat_id": "466396237",
+        "groups": [],
+        "user_permissions": []
+    }
+}
+]

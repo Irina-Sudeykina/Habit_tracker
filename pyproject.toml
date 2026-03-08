@@ -1,3 +1,10 @@
+[tool.poetry]
+name = "habit-tracker"
+version = "0.1.0"
+description = ""
+authors = ["Ирина Судейкина <irinaasster@gmail.com>"]
+readme = "README.md"
+
 [project]
 name = "habit-tracker"
 version = "0.1.0"

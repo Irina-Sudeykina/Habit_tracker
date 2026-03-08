@@ -128,6 +128,7 @@ cd project
 
 ### 2. Соберите образы, запустите контейнеры и примените миграции:
 ```
+ssh -i .ssh\adminsia adminsia@158.160.178.115
 docker-compose up -d --build
 docker-compose exec web python manage.py migrate
 ```

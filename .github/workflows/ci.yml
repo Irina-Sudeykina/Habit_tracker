@@ -58,15 +58,19 @@ jobs:
                 # Заходим в папку проекта
                 cd ~/Habit_tracker
                 
-                # Забираем свежий код из GitHub (включая изменения в .yml)
+                # Обновляем код
                 git pull origin main
                 
-                # Пересобираем и запускаем все контейнеры (web, db, redis, celery, beat)
+                # Перезапускаем контейнеры
                 docker compose up -d --build
                 
-                # Применяем миграции внутри контейнера web (флаг -T важен!)
+                # Применяем миграции
                 docker compose exec -T web python manage.py migrate
                 
-                # Удаляем старые ненужные слои образов, чтобы не тратить место
+                # Исправляем права и собираем статику (чтобы админка была со стилями)
+                docker compose exec -u root -T web sh -c "mkdir -p /app/staticfiles && chmod -R 777 /app/staticfiles"
+                docker compose exec -T web python manage.py collectstatic --noinput
+                
+                # Очистка неиспользуемых данных
                 docker image prune -f
                 EOF

@@ -22,6 +22,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Копируем остальную часть приложения
 COPY . .
 
+# Создаем и даем права на директорию для статических файлов
+RUN mkdir -p /app/staticfiles && chmod -R 755 /app/staticfiles
+
 # Прокидываем порт Django
 EXPOSE 8000
 
@@ -29,4 +32,5 @@ EXPOSE 8000
 USER www-data
 
 # Запускаем приложение
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["sh", "-c", "python manage.py collectstatic --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:8000"]

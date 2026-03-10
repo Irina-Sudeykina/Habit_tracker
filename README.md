@@ -120,6 +120,16 @@ python manage.py runserver
 
 ## Создание и запуск проекта
 
+### Запуск через виртуальную машину:
+```
+ssh -i .ssh\adminsia adminsia@158.160.178.115
+cd ~/Habit_tracker
+```
+В браузере:
+```
+http://158.160.178.115/admin/
+```
+
 ### 1. Склонируйте репозиторий проекта:
 ```
 git clone https://github.com/Irina-Sudeykina/Habit_tracker.git

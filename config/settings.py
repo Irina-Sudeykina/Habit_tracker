@@ -1,7 +1,7 @@
 import os
 import sys
-from pathlib import Path
 from datetime import timedelta
+from pathlib import Path
 
 from dotenv import load_dotenv
 
@@ -163,7 +163,7 @@ CORS_ALLOW_ALL_ORIGINS = False
 # URL-адрес брокера сообщений
 # CELERY_BROKER_URL = os.getenv("RADIS_LOCATION")
 CELERY_BROKER_URL = 'redis://redis:6379/1'
-# URL-адрес брокера результатов, также Redis  
+# URL-адрес брокера результатов, также Redis
 # CELERY_RESULT_BACKEND = os.getenv("RADIS_LOCATION")
 CELERY_RESULT_BACKEND = 'redis://redis:6379/1'
 CELERY_ACCEPT_CONTENT = ['json']
@@ -174,12 +174,12 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
 
 # Флаг отслеживания выполнения задач
-CELERY_TASK_TRACK_STARTED = True 
+CELERY_TASK_TRACK_STARTED = True
 
 # Максимальное время на выполнение задачи
 CELERY_TASK_TIME_LIMIT = 30 * 60
 
-CELERY_BEAT_SCHEDULER='django_celery_beat.schedulers:DatabaseScheduler'
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 CELERY_BEAT_SCHEDULE = {
     'send_reminder': {
